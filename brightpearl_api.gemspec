@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = BrightpearlApi::VERSION
   spec.authors       = ["Kunwar Aditya Raghuwanshi"]
   spec.email         = ["adi.version1@gmail.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Brightpearl API Library}
+  spec.description   = %q{Gem for connecting to your brightpearl account via their API}
+  spec.homepage      = "http://github.com/kitwalker12/brightpearl_api"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -20,4 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake"
+  spec.add_development_dependency "activesupport"
+  spec.add_development_dependency "rspec"
+  spec.add_development_dependency "pry"
 end
