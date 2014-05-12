@@ -1,6 +1,6 @@
 # BrightpearlApi
 
-TODO: Write a gem description
+Gem for connecting to your brightpearl account via their API
 
 ## Installation
 
