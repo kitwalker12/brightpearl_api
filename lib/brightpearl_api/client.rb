@@ -1,0 +1,90 @@
+require 'singleton'
+require 'httparty'
+
+module BrightpearlApi
+  class AuthException < StandardError; end
+  class BrightpearlException < StandardError; end
+
+  class Client
+    include Singleton
+
+    @@token = false
+
+    def self.instance
+      @@instance ||= new
+    end
+
+    def call(type, path, data = {})
+      api_call(type, path, data)
+    rescue AuthException => e
+      reset_token
+      api_call(type, path, data)
+    end
+
+    def api_call(type, path, data = {})
+      token = authenticate
+
+      uri = configuration.uri(path)
+      options = {
+        :headers => {
+          'Content-Type' => 'application/json',
+          'Accept' => 'json',
+          'brightpearl-auth' => token
+        },
+        :body => data.to_json
+      }
+      if type == :get
+        response = HTTParty.get(uri, options)
+      elsif type == :post
+        response = HTTParty.post(uri, options)
+      elsif type == :put
+        response = HTTParty.put(uri, options)
+      elsif type == :options
+        response = HTTParty.options(uri, options)
+      elsif type == :delete
+        response = HTTParty.delete(uri, options)
+      end
+      check_response(response)
+      return response["response"]
+    end
+
+    def authenticate
+      return @@token unless @@token.blank?
+      options = {
+        :headers => {
+          'Content-Type' => 'application/json',
+          'Accept' => 'json'
+        },
+        :body => {
+          :apiAccountCredentials => {
+            :emailAddress => configuration.email,
+            :password => configuration.password
+          }
+        }.to_json
+      }
+      response = HTTParty.post(configuration.auth_uri, options)
+      check_response(response)
+      @@token = response["response"]
+    end
+
+    def reset_token
+      @@token = false
+    end
+
+    private
+
+    def configuration
+      BrightpearlApi.configuration
+    end
+
+    def check_response(response)
+      if(!response['errors'].blank?)
+        reset_token
+        raise BrightpearlException, "#{response.to_json}"
+      end
+      if (response['response'].is_a? String) && (response['response'].include? 'Not authenticated')
+        raise AuthException, "#{response.to_json}"
+      end
+    end
+  end
+end
