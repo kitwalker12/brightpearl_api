@@ -45,6 +45,12 @@ BrightpearlApi.configure do |c|
 end
 ```
 
+Then, anywhere
+
+```
+s = BrightpearlApi::Service.new
+```
+
 ## Contributing
 
 1. Fork it ( http://github.com/kitwalker12/brightpearl_api/fork )
