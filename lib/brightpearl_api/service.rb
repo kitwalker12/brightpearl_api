@@ -17,5 +17,16 @@ module BrightpearlApi
     def call(type, path, data = {})
       Client.instance.call(type, path, data)
     end
+
+    def parse_idset(idset)
+      id_set = nil
+      case idset
+      when Array, Range
+        id_set = "#{idset.min.to_int}-#{idset.max.to_int}"
+      else
+        id_set = idset.to_int
+      end
+      id_set
+    end
   end
 end
