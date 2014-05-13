@@ -46,6 +46,16 @@ module BrightpearlApi
       end
     end
 
+    def update_resource(service, resource, resource_id)
+      body = {}
+      yield(body)
+      call(:put, "/#{service}-service/#{resource}/#{resource_id.to_int}", body)
+    end
+
+    def delete_resource(service, resource, resource_id)
+      call(:delete, "/#{service}-service/#{resource}/#{resource_id.to_int}")
+    end
+
     def get_resource_range(service, resource, idset = nil)
       if !idset.nil?
         id_set = parse_idset(idset)
