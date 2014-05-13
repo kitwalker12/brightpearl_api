@@ -3,28 +3,8 @@ module BrightpearlApi
     module Order
       def self.included(klass)
         klass.class_eval do
-          def get_order(idset)
-            id_set = parse_idset(idset)
-            call(:get, "/order-service/order/#{id_set}")
-          end
-
-          def get_order_range_uris(idset)
-            id_set = parse_idset(idset)
-            call(:options, "/order-service/order/#{id_set}")
-          end
-
-          def get_all_order_range_uris
-            call(:options, "/order-service/order")
-          end
-
           def order_search
             # TODO
-          end
-
-          def create_order
-            body = {}
-            yield(body)
-            call(:post, "/order-service/order/", body)
           end
 
           def order_acknowledgement(order_id, reference)
@@ -54,11 +34,6 @@ module BrightpearlApi
             body = {}
             yield(body)
             call(:put, "/order-service/order/#{order_id.to_int}/row/#{row_id.to_int}", body)
-          end
-
-          def get_order_status
-            id_set = parse_idset(idset)
-            call(:get, "/order-service/order-status/#{id_set}")
           end
 
           def update_order_status(order_id)

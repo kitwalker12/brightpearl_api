@@ -30,5 +30,29 @@ module BrightpearlApi
       end
       id_set
     end
+
+    def create_resource(service, resource)
+      body = {}
+      yield(body)
+      call(:post, "/#{service}-service/#{resource}/", body)
+    end
+
+    def get_resource(service, resource, idset = nil)
+      if !idset.nil?
+        id_set = parse_idset(idset)
+        call(:get, "/#{service}-service/#{resource}/#{id_set}")
+      else
+        call(:get, "/#{service}-service/#{resource}")
+      end
+    end
+
+    def get_resource_range(service, resource, idset = nil)
+      if !idset.nil?
+        id_set = parse_idset(idset)
+        call(:options, "/#{service}-service/#{resource}/#{id_set}")
+      else
+        call(:options, "/#{service}-service/#{resource}")
+      end
+    end
   end
 end
