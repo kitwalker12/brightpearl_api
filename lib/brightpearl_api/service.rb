@@ -21,8 +21,10 @@ module BrightpearlApi
     def parse_idset(idset)
       id_set = nil
       case idset
-      when Array, Range
+      when Range
         id_set = "#{idset.min.to_int}-#{idset.max.to_int}"
+      when Array
+        id_set = idset.collect{ |x| x.to_int }.join(',')
       else
         id_set = idset.to_int
       end

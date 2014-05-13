@@ -51,6 +51,51 @@ Then, anywhere
 s = BrightpearlApi::Service.new
 ```
 
+### API
+
+*All Post calls have to be passed a block which constructs a body hash*
+
+#### Contact
+
+```
+s.get_contact(200)
+s.get_contact([200, 201, 207])
+s.get_contact(200..205)
+
+s.get_contact_range_uris(200..500)
+s.get_all_contact_range_uris
+
+s.get_address(151)
+
+s.create_contact do |body|
+  hash = {
+    salutation: "Ms.",
+    firstName: "Pink",
+    lastName: "Melody",
+    postAddressIds: {
+      DEF: 141,
+      BIL: 141,
+      DEL: 141
+    }
+  }
+  body.merge!(hash)
+end
+
+s.create_address do |body|
+  hash = {
+    addressLine1: "Brightpearl, First Floor",
+    addressLine2: "New Bond House",
+    addressLine3: "Bond Street",
+    addressLine4: "Bristol",
+    postalCode: "BS2 9AG",
+    countryIsoCode: "GBR"
+  }
+  body.merge!(hash)
+end
+
+s.associate_tag(201, 11)
+```
+
 ## Contributing
 
 1. Fork it ( http://github.com/kitwalker12/brightpearl_api/fork )
