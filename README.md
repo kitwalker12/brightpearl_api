@@ -18,7 +18,32 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Initialize
+
+Refer [Brightpearl Documentation](http://www.brightpearl.com/developer/latest/tutorial/getting-started.html) for values.
+
+In ```config/initializers/brightpearl_api.rb```
+
+With Environment Variables set
+
+```(ENV['BRIGHTPEARL_EMAIL'], ENV['BRIGHTPEARL_PASSWORD'], ENV['BRIGHTPEARL_VERSION'], ENV['BRIGHTPEARL_DATACENTER'], ENV['BRIGHTPEARL_ACCOUNT'])```
+
+```
+BrightpearlApi.configure do
+end
+```
+
+Else
+
+```
+BrightpearlApi.configure do |c|
+  c.email = 'someone@example.com'
+  c.password = 'something'
+  c.version = '2.0.0'
+  c.datacenter = 'ws-usw'
+  c.account = 'myaccount'
+end
+```
 
 ## Contributing
 
