@@ -53,21 +53,18 @@ s = BrightpearlApi::Service.new
 
 ### API
 
-*All Post calls have to be passed a block which constructs a body hash*
+__All Post calls have to be passed a block which constructs a body hash__
 
-#### Contact
+#### Multi Purpose
+
+*Two functions (get_resource & create_resource) take the service name and resource name as parameters. get_resource also takes an optional idset parameter which can be an int, range or array. It'll try to get all resources if idset is not provided and the API supports it.*
+
+*Range URI's can be retrived via get_resource_range which also takes an optional range*
 
 ```
-s.get_contact(200)
-s.get_contact([200, 201, 207])
-s.get_contact(200..205)
-
-s.get_contact_range_uris(200..500)
-s.get_all_contact_range_uris
-
-s.get_address(151)
-
-s.create_contact do |body|
+s.get_resource('product', 'product', 100)
+s.get_resource('product', 'product', 100..200)
+s.create_resource('contact', 'contact') do |body|
   hash = {
     salutation: "Ms.",
     firstName: "Pink",
@@ -81,7 +78,7 @@ s.create_contact do |body|
   body.merge!(hash)
 end
 
-s.create_address do |body|
+s.create_resource('contact', 'postal-address') do |body|
   hash = {
     addressLine1: "Brightpearl, First Floor",
     addressLine2: "New Bond House",
@@ -93,17 +90,7 @@ s.create_address do |body|
   body.merge!(hash)
 end
 
-s.associate_tag(201, 11)
-```
-
-#### Order
-
-```
-s.get_order(1001)
-s.get_order_range_uris(1001..2001)
-s.get_all_order_range_uris
-
-s.create_order do |body|
+s.create_resource('order', 'order') do |body|
   hash = {
     orderTypeCode: "SO",
     reference: "order#001",
@@ -142,69 +129,130 @@ s.create_order do |body|
   body.merge!(hash)
 end
 
-s.order_acknowledgement(1001, "#1752805305.fhe908qw-z-z-plural-z-alpha")
-
-s.create_order_note(1001) do |body|
+s.create_resource('product', 'product') do |body|
   hash = {
-    text: "Updating Order details"
-  }
-  body.merge!(hash)
-end
-
-s.get_order_row(10001, 1)
-s.create_order_row(1001) do |body|
-  hash = {
-    productId: 1202,
-    quantity: {
-      magnitude: "12"
-    },
-    rowValue:{
-      taxCode:"T20",
-      rowNet:{
-          value: "12.21"
-      },
-      rowTax:{
-          value: "2.44"
+    brandId: 74,
+    financialDetails: {
+      taxCode: {
+        id: 7
       }
     },
-    nominalCode: "4000"
-  }
-  body.merge!(hash)
-end
-
-s.update_order_row(1001, 2) do |body|
-  hash = {
-    productName: "Labour",
-    quantity: {
-      magnitude: "2"
-    },
-    rowValue:{
-      taxCode:"T20",
-      rowNet:{
-        value: "20.00"
-      },
-      rowTax:{
-        value: "2.44"
+    salesChannels: [
+      {
+        salesChannelName: "Brightpearl",
+        productName: "Product B",
+        productCondition: "new",
+        categories: [
+          {
+            categoryCode: "276"
+          }
+         ]
       }
-    },
-    nominalCode: "4000"
+    ]
   }
   body.merge!(hash)
 end
 
-s.get_order_status(1001)
-s.update_order_status do |body|
+s.get_resource_range('contact', 'contact', 100..200)
+s.get_resource_range('order', 'order')
+
+```
+
+#### Supported Service - Resource Pairs
+
+| Service      | Resource               |
+| ------------ | ---------------------- |
+| contact      | contact                |
+| contact      | postal-address         |
+| order        | order                  |
+| order        | order-status           |
+| product      | brand                  |
+| product      | brightpearl-category   |
+| product      | channel                |
+| product      | option                 |
+| product      | price-list             |
+| product      | product                |
+| product      | product-price          |
+| product      | product-type           |
+| product      | season                 |
+
+#### Contact
+
+```
+s.associate_tag(idset, tag_id)
+```
+
+#### Order
+
+```
+s.order_acknowledgement(order_id, reference)
+s.create_order_note(order_id)
+s.get_order_row(order_id, row_id)
+s.create_order_row(order_id) do |body|
   hash = {
-    orderStatusId: 21,
-    orderNote: {
-      text: "Updating order status!!",
-      isPublic: true,
-      fileId: 28
-    }
+    #...
+  }
+  body.merge!(hash)
+end
+s.update_order_row(order_id, row_id) do |body|
+  hash = {
+    #...
+  }
+  body.merge!(hash)
+end
+s.update_order_status(order_id) do |body|
+  hash = {
+    #...
   }
   body.merge!(hash)
 end
 ```
+
+#### Product
+
+```
+s.create_brand(name, description)
+s.create_category(name, parentId)
+s.get_option_value(idset)
+s.create_option_value(option_id, optionValueName)
+s.update_product_price(1001) do |body|
+  hash = {
+    priceLists: [
+      {
+        priceListId: 1,
+        quantityPrice: {
+          1: "1",
+          5: "9.555",
+          15: "9",
+          25: "8",
+          50: "7.5",
+          200: "7"
+        }
+      },
+      {
+        priceListId: 2,
+        quantityPrice: {
+          1: "1",
+          5: "9.555",
+          15: "9",
+          25: "8",
+          50: "7.5",
+          200: "7"
+        }
+      }
+    ]
+  }
+  body.merge!(hash)
+end
+
+s.create_product_type(name)
+s.product_type_association(product_id_set, option_id_set)
+s.create_season(name, description)
+```
+
+## TODO
+
+Resource Search
 
 ## Contributing
 
