@@ -96,6 +96,116 @@ end
 s.associate_tag(201, 11)
 ```
 
+#### Order
+
+```
+s.get_order(1001)
+s.get_order_range_uris(1001..2001)
+s.get_all_order_range_uris
+
+s.create_order do |body|
+  hash = {
+    orderTypeCode: "SO",
+    reference: "order#001",
+    priceListId: 2,
+    invoices: [
+      {
+        taxDate: "2012-06-08T12:57:25+00:00"
+      }
+    ],
+    placedOn: "2011-09-29T11:12:24.000+01:00",
+    orderStatus: {
+      orderStatusId: 1
+    },
+    delivery: {
+      deliveryDate: "2011-09-29T11:12:24.000+01:00",
+      shippingMethodId: 2
+    },
+    currency: {
+      orderCurrencyCode: "GBP"
+    },
+    parties: {
+      customer: {
+        contactId: 204
+      }
+    },
+    assignment: {
+      current: {
+        channelId: 1,
+        leadSourceId: 1,
+        projectId: 1,
+        staffOwnerContactId: 501,
+        teamId: 2
+      }
+    }
+  }
+  body.merge!(hash)
+end
+
+s.order_acknowledgement(1001, "#1752805305.fhe908qw-z-z-plural-z-alpha")
+
+s.create_order_note(1001) do |body|
+  hash = {
+    text: "Updating Order details"
+  }
+  body.merge!(hash)
+end
+
+s.get_order_row(10001, 1)
+s.create_order_row(1001) do |body|
+  hash = {
+    productId: 1202,
+    quantity: {
+      magnitude: "12"
+    },
+    rowValue:{
+      taxCode:"T20",
+      rowNet:{
+          value: "12.21"
+      },
+      rowTax:{
+          value: "2.44"
+      }
+    },
+    nominalCode: "4000"
+  }
+  body.merge!(hash)
+end
+
+s.update_order_row(1001, 2) do |body|
+  hash = {
+    productName: "Labour",
+    quantity: {
+      magnitude: "2"
+    },
+    rowValue:{
+      taxCode:"T20",
+      rowNet:{
+        value: "20.00"
+      },
+      rowTax:{
+        value: "2.44"
+      }
+    },
+    nominalCode: "4000"
+  }
+  body.merge!(hash)
+end
+
+s.get_order_status(1001)
+s.update_order_status do |body|
+  hash = {
+    orderStatusId: 21,
+    orderNote: {
+      text: "Updating order status!!",
+      isPublic: true,
+      fileId: 28
+    }
+  }
+  body.merge!(hash)
+end
+```
+
 ## Contributing
 
 1. Fork it ( http://github.com/kitwalker12/brightpearl_api/fork )
