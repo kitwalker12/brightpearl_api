@@ -1,9 +1,16 @@
+require 'singleton'
+
 module BrightpearlApi
   class Configuration
+    include Singleton
 
     attr_accessor :email, :password, :version, :datacenter, :account
 
-    def initialize(args = {})
+    def self.instance
+      @@instance ||= new
+    end
+
+    def init(args = {})
       @email = default_email
       @password = default_password
       @version = default_version
@@ -16,8 +23,8 @@ module BrightpearlApi
 
     def valid?
       result = true
-      self.instance_values.each do |key, value|
-        result = false if value.blank?
+      [:email, :password, :version, :datacenter, :account].each do |value|
+        result = false if self.send(value).blank?
       end
       result
     end
