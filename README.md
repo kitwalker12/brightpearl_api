@@ -57,7 +57,7 @@ __All Post calls have to be passed a block which constructs a body hash__
 
 #### Multi Purpose
 
-*Four functions (get_resource, create_resource, update_resource, delete_resource) take the service name and resource name as parameters. get_resource also takes an optional idset parameter which can be an int, range or array. It'll try to get all resources if idset is not provided and the API supports it.*
+*Five functions (get_resource, create_resource, update_resource, delete_resource, search_resource) take the service name and resource name as parameters. get_resource also takes an optional idset parameter which can be an int, range or array. It'll try to get all resources if idset is not provided and the API supports it.*
 
 *Range URI's can be retrived via get_resource_range which also takes an optional range*
 
@@ -155,6 +155,13 @@ end
 
 s.get_resource_range('contact', 'contact', 100..200)
 s.get_resource_range('order', 'order')
+
+s.search_resource('contact','contact') do |body|
+  hash = {
+    allEmail: 'me@example.com'
+  }
+  body.merge!(hash)
+end
 
 ```
 

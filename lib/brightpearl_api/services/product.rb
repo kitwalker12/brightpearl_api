@@ -31,10 +31,6 @@ module BrightpearlApi
             call(:post, "/product-service/option/#{option_id.to_int}/value", body)
           end
 
-          def product_search
-            # TODO
-          end
-
           def update_product_price(product_id)
             body = {}
             yield(body)

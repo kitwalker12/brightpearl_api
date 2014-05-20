@@ -64,5 +64,21 @@ module BrightpearlApi
         call(:options, "/#{service}-service/#{resource}")
       end
     end
+
+    def search_resource(service, resource)
+      body = {}
+      yield(body)
+      result_hash = []
+      response = call(:get, "/#{service}/#{resource}-search?#{body.to_query}")
+      properties = response['metaData']['columns'].map { |x| x['name'] }
+      response['results'].each do |result|
+        hash = {}
+        properties.each_with_index do |item, index|
+          hash[item] = result[index]
+        end
+        result_hash << hash
+      end
+      result_hash
+    end
   end
 end

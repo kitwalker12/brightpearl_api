@@ -3,10 +3,6 @@ module BrightpearlApi
     module Order
       def self.included(klass)
         klass.class_eval do
-          def order_search
-            # TODO
-          end
-
           def order_acknowledgement(order_id, reference)
             body = {
               reference: "#{reference}"
