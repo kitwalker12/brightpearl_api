@@ -25,6 +25,8 @@ module BrightpearlApi
         id_set = "#{idset.min.to_i}-#{idset.max.to_i}"
       when Array
         id_set = idset.collect{ |x| x.to_i }.join(',')
+      else
+        id_set = idset
       end
       id_set
     end
