@@ -1,5 +1,6 @@
 require 'singleton'
 require 'httparty'
+require 'curb'
 
 module BrightpearlApi
   class Client
@@ -37,7 +38,10 @@ module BrightpearlApi
       elsif type == :put
         response = HTTParty.put(uri, options)
       elsif type == :options
-        response = HTTParty.options(uri, options)
+        http = Curl.options(uri) do|http|
+          http.headers = options[:headers]
+        end
+        response = JSON.parse(http.body_str)
       elsif type == :delete
         response = HTTParty.delete(uri, options)
       end
