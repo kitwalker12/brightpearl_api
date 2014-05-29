@@ -22,11 +22,9 @@ module BrightpearlApi
       id_set = nil
       case idset
       when Range
-        id_set = "#{idset.min.to_int}-#{idset.max.to_int}"
+        id_set = "#{idset.min.to_i}-#{idset.max.to_i}"
       when Array
-        id_set = idset.collect{ |x| x.to_int }.join(',')
-      else
-        id_set = idset.to_int
+        id_set = idset.collect{ |x| x.to_i }.join(',')
       end
       id_set
     end
@@ -49,11 +47,11 @@ module BrightpearlApi
     def update_resource(service, resource, resource_id)
       body = {}
       yield(body)
-      call(:put, "/#{service}-service/#{resource}/#{resource_id.to_int}", body)
+      call(:put, "/#{service}-service/#{resource}/#{resource_id.to_i}", body)
     end
 
     def delete_resource(service, resource, resource_id)
-      call(:delete, "/#{service}-service/#{resource}/#{resource_id.to_int}")
+      call(:delete, "/#{service}-service/#{resource}/#{resource_id.to_i}")
     end
 
     def get_resource_range(service, resource, idset = nil)
