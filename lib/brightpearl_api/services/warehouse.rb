@@ -72,7 +72,7 @@ module BrightpearlApi
 
           def get_goods_out_note(order_id_set, goods_out_note_id_set = nil)
             oid = parse_idset(order_id_set)
-            gid = goods_out_note_id.nil? ? "" : parse_idset(goods_out_note_id_set)
+            gid = goods_out_note_id_set.nil? ? "" : parse_idset(goods_out_note_id_set)
             call(:get, "/warehouse-service/order/#{oid}/goods-note/goods-out/#{gid}")
           end
 
