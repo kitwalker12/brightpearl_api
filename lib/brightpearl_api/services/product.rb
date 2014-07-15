@@ -34,7 +34,7 @@ module BrightpearlApi
           def update_product_price(product_id)
             body = {}
             yield(body)
-            call(:put, "/product-service/product-service/#{product_id.to_i}/price-list", body)
+            call(:put, "/product-service/product-price/#{product_id.to_i}/price-list", body)
           end
 
           def create_product_type(name)
