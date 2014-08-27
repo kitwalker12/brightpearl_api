@@ -369,6 +369,13 @@ s.create_internal_transfer(warehouse_id) do |body|
   body.merge!(hash)
 end
 
+s.create_external_transfer(warehouse_id) do |body|
+  hash = {
+    #...
+  }
+  body.merge!(hash)
+end
+
 s.quarantine_release(warehouse_id) do |body|
   hash = {
     #...

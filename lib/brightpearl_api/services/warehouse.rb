@@ -100,6 +100,12 @@ module BrightpearlApi
             call(:post, "/warehouse-service/warehouse/#{warehouse_id.to_i}/internal-transfer", body)
           end
 
+          def create_external_transfer(warehouse_id)
+            body = {}
+            yield(body)
+            call(:post, "/warehouse-service/warehouse/#{warehouse_id.to_i}/external-transfer", body)
+          end
+
           def quarantine_release(warehouse_id)
             body = {}
             yield(body)
