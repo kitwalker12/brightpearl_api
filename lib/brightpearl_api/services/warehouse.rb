@@ -111,6 +111,31 @@ module BrightpearlApi
             yield(body)
             call(:post, "/warehouse-service/warehouse/#{warehouse_id.to_i}/quarantine/release", body)
           end
+
+          def search_goods_out_notes
+            body = {}
+            yield(body)
+            body[:pageSize] = 500
+            body[:firstResult] = 1
+            result_hash = []
+            results_returned = 0
+            results_available = 1
+            while results_returned < results_available
+              response = call(:get, "/warehouse-service/goods-note/goods-out-search?#{body.to_query}")
+              results_returned += response['metaData']['resultsReturned']
+              results_available = response['metaData']['resultsAvailable']
+              body[:firstResult] = results_returned + 1
+              properties = response['metaData']['columns'].map { |x| x['name'] }
+              response['results'].each do |result|
+                hash = {}
+                properties.each_with_index do |item, index|
+                  hash[item] = result[index]
+                end
+                result_hash << hash
+              end
+            end
+            result_hash
+          end
         end
       end
     end
