@@ -17,6 +17,10 @@ module BrightpearlApi
     rescue AuthException => e
       reset_token
       api_call(type, path, data)
+    rescue ThrottleException => e
+      sleep(5.seconds)
+      reset_token
+      api_call(type, path, data)
     end
 
     def api_call(type, path, data = {})
@@ -85,6 +89,9 @@ module BrightpearlApi
       end
       if (response['response'].is_a? String) && (response['response'].include? 'Not authenticated')
         raise AuthException, "#{response.to_json}"
+      end
+      if (response['response'].is_a? String) && (response['response'].include? 'Please wait before sending another request')
+        raise ThrottleException, "#{response.to_json}"
       end
     end
   end
