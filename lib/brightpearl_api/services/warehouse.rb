@@ -112,6 +112,12 @@ module BrightpearlApi
             call(:post, "/warehouse-service/warehouse/#{warehouse_id.to_i}/quarantine/release", body)
           end
 
+          def stock_correction(warehouse_id)
+            body = {}
+            yield(body)
+            call(:post, "/warehouse-service/warehouse/#{warehouse_id.to_i}/stock-correction", body)
+          end
+
           def search_goods_out_notes
             body = {}
             yield(body)

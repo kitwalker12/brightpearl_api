@@ -18,7 +18,7 @@ module BrightpearlApi
       reset_token
       api_call(type, path, data)
     rescue ThrottleException => e
-      sleep(5.seconds)
+      sleep(60.seconds)
       reset_token
       api_call(type, path, data)
     end

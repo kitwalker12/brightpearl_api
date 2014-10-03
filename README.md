@@ -384,9 +384,13 @@ s.quarantine_release(warehouse_id) do |body|
 end
 ```
 
-## TODO
+## Updates (Features Added)
 
-Resource Search
+* Stock Correction
+* Goods Out Note Search
+* External Transfer Request
+* Resource Search
+* Handle Throttle response
 
 ## Contributing
 
