@@ -163,6 +163,45 @@ s.search_resource('contact','contact') do |body|
   body.merge!(hash)
 end
 
+s.multi_message do |body|
+  hash = {
+    processingMode: "SEQUENTIAL",
+    onFail: "STOP",
+    messages:[
+      {
+        label:"LABEL1",
+        uri: "/warehouse-service/warehouse",
+        httpMethod: "POST",
+        body:{
+          name: "Bristol shipping warehouse",
+          address:{
+            addressId: 34
+          }
+        }
+      },
+      {
+        label:"LABEL2",
+        uri: "/warehouse-service/warehouse",
+        httpMethod: "PUT",
+        body:{
+          warehouses:[
+            {
+              id: 10,
+              name: "Receiving warehouse"
+            }
+          ]
+        }
+      },
+      {
+        label:"LABEL3",
+        uri: "/warehouse-service/warehouse/45",
+        httpMethod: "DELETE"
+      }
+    ]
+  }
+  body.merge!(hash)
+end
+
 ```
 
 #### Supported Service - Resource Pairs

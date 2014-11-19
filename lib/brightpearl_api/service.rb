@@ -89,5 +89,11 @@ module BrightpearlApi
       end
       result_hash
     end
+
+    def multi_message
+      body = {}
+      yield(body)
+      call(:post, "/multi-message", body)
+    end
   end
 end
