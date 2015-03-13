@@ -21,6 +21,9 @@ module BrightpearlApi
       sleep(60.seconds)
       reset_token
       api_call(type, path, data)
+    rescue DatabaseException => e
+      sleep(1.seconds)
+      api_call(type, path, data)
     end
 
     def api_call(type, path, data = {})
@@ -85,6 +88,11 @@ module BrightpearlApi
     def check_response(response)
       if(!response['errors'].blank?)
         reset_token
+        if response['errors'].is_a? Array
+          if response['errors'][0].fetch('message', '').include? 'Could not create connection to database server'
+            raise DatabaseException, "#{response.to_json}"
+          end
+        end
         raise BrightpearlException, "#{response.to_json}"
       end
       if (response['response'].is_a? String) && (response['response'].include? 'Not authenticated')

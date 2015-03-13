@@ -12,6 +12,7 @@ module BrightpearlApi
   class AuthException < StandardError; end
   class BrightpearlException < StandardError; end
   class ThrottleException < StandardError; end
+  class DatabaseException < StandardError; end
 
   def self.configure
     Configuration.instance.init
