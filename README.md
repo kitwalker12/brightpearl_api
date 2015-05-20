@@ -359,6 +359,7 @@ end
 s.delete_goods_in_note(goods_in_note_id)
 s.delete_goods_out_note(order_id, goods_out_note_id)
 s.get_goods_out_note(order_id_set, goods_out_note_id_set)
+s.get_goods_in_note(order_id_set, goods_in_note_id_set)
 
 s.create_goods_out_note(order_id) do |body|
   hash = {
