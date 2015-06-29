@@ -38,10 +38,10 @@ module BrightpearlApi
             call(:put, "/order-service/order/#{order_id.to_i}/status", body)
           end
           
-          def update_custom_field(order_id)
+          def update_order_custom_field(order_id)
             body = {}
             yield(body)
-            call(:post, "/order-service/order/#{order_id.to_i}/custom-field", body)
+            call(:put, "/order-service/order/#{order_id.to_i}/custom-field", body)
           end
         end
       end
